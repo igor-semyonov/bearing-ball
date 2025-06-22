@@ -25,7 +25,7 @@ const ACCELERATION_DUE_TO_GRAVITY: f32 = 500.0;
 const BALL_INITIAL_POSITION: Vec3 = Vec3::new(
     0.0, 50.0, 1.0,
 );
-const PLAYER1_INITIAL_POSITION_X: f32 = 0.0;
+const PLAYER1_INITIAL_POSITION_X: f32 = -80.0;
 
 const BALL_COLOR: Color = Color::srgb(
     0.5, 1.0, 0.5,
@@ -33,8 +33,8 @@ const BALL_COLOR: Color = Color::srgb(
 const PLAYER1_COLOR: Color = Color::srgb(
     0.8, 0.2, 0.8,
 );
-const BALL_DIAMETER: f32 = 30.;
-const PLAYER_DIAMETER: f32 = 90.;
+const BALL_DIAMETER: f32 = 90.;
+const PLAYER_DIAMETER: f32 = 270.;
 
 const BALL_INITIAL_DIRECTION: Vec2 = Vec2::new(
     0.0, 1.0,
@@ -219,6 +219,7 @@ fn check_for_collisions(
         (
             Entity,
             &Transform,
+            // &Velocity,
         ),
         With<Collider>,
     >,
@@ -227,6 +228,41 @@ fn check_for_collisions(
     let (mut ball_velocity, ball_transform) =
         ball_query.into_inner();
 
-    for (collider_entity, collider_transform, ) in &collider_query{
+    for (
+        collider_entity,
+        collider_transform,
+        // collider_velocity,
+    ) in &collider_query
+    {
+        let ball_bounding_circle = BoundingCircle::new(
+            ball_transform
+                .translation
+                .truncate(),
+            BALL_DIAMETER / 2.0,
+        );
+        let collider_bounding_circle = BoundingCircle::new(
+            collider_transform
+                .translation
+                .truncate(),
+            PLAYER_DIAMETER / 2.0,
+        );
+
+        if !ball_bounding_circle
+            .intersects(&collider_bounding_circle)
+        {
+            continue;
+        }
+
+        let collission_normal = collider_bounding_circle
+            .closest_point(ball_bounding_circle.center)
+            - ball_transform
+                .translation
+                .truncate();
+        let theta =
+            ball_velocity.angle_to(collission_normal);
+        let new_ball_velocity = -ball_velocity
+            .rotate(Vec2::from_angle(2.0 * theta));
+        ball_velocity.x = new_ball_velocity.x;
+        ball_velocity.y = new_ball_velocity.y;
     }
 }

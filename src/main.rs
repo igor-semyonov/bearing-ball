@@ -85,6 +85,9 @@ struct Ball;
 #[derive(Event, Default)]
 struct CollisionEvent;
 
+#[derive(Resource, Deref)]
+struct CollisionSound(Handle<AudioSource>);
+
 #[derive(Component)]
 #[require(
     Transform, Collider
@@ -262,6 +265,7 @@ fn main() {
             apply_ball_bounds,
             apply_player_bounds,
             player_movement,
+            play_collision_sound,
         ),
     );
     app.run();
@@ -271,6 +275,7 @@ fn setup(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<ColorMaterial>>,
+    asset_server: Res<AssetServer>,
 ) {
     // spawn a camera to be able to see anything
     commands.spawn((
@@ -379,6 +384,7 @@ fn setup(
     commands.spawn(Wall::new(WallLocation::Bottom));
     commands.spawn(Wall::new(WallLocation::Top));
 
+    // Net
     commands.spawn((
         Net,
         Sprite::from_color(
@@ -399,6 +405,13 @@ fn setup(
             ..default()
         },
     ));
+
+    // Sound
+    let ball_collision_sound =
+        asset_server.load("sounds/collision.ogg");
+    commands.insert_resource(
+        CollisionSound(ball_collision_sound),
+    );
 }
 
 fn apply_velocity(
@@ -456,7 +469,7 @@ fn check_for_ball_collisions(
             Without<Ball>,
         ),
     >,
-    // mut collider_event: EventWriter<CollisionEvent>,
+    mut collision_event: EventWriter<CollisionEvent>,
 ) {
     let (mut ball_transform, mut ball_velocity) =
         ball_query.into_inner();
@@ -526,6 +539,7 @@ fn check_for_ball_collisions(
         ball_velocity.y +=
             player_velocity_projected_onto_collision_normal
                 .y;
+        collision_event.write_default();
     }
     let (net_transform,) = &net_query.into_inner();
     let ball_bounding_circle = BoundingCircle::new(
@@ -560,6 +574,21 @@ fn check_for_ball_collisions(
             .rotate(Vec2::from_angle(2.0 * theta));
         ball_velocity.x = new_ball_velocity.x;
         ball_velocity.y = new_ball_velocity.y;
+        collision_event.write_default();
+    }
+}
+
+fn play_collision_sound(
+    mut commands: Commands,
+    mut collision_events: EventReader<CollisionEvent>,
+    sound: Res<CollisionSound>,
+) {
+    if !collision_events.is_empty() {
+        collision_events.clear();
+        commands.spawn((
+            AudioPlayer(sound.clone()),
+            PlaybackSettings::DESPAWN,
+        ));
     }
 }
 

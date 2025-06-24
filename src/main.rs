@@ -300,9 +300,8 @@ fn setup(
         Collider,
         Velocity(Vec2::splat(0.0)),
         Bounds {
-            right: BOUNDARY_RIGHT
-                - PLAYER_DIAMETER / 2.0
-                - WALL_THICKNESS / 2.0,
+            right: -PLAYER_DIAMETER / 2.0
+                - NET_THICKNESS / 2.0,
             left: BOUNDARY_LEFT
                 + PLAYER_DIAMETER / 2.0
                 + WALL_THICKNESS / 2.0,
@@ -334,9 +333,8 @@ fn setup(
             right: BOUNDARY_RIGHT
                 - PLAYER_DIAMETER / 2.0
                 - WALL_THICKNESS / 2.0,
-            left: BOUNDARY_LEFT
-                + PLAYER_DIAMETER / 2.0
-                + WALL_THICKNESS / 2.0,
+            left: PLAYER_DIAMETER / 2.0
+                + NET_THICKNESS / 2.0,
             top: BOUNDARY_TOP
                 - PLAYER_DIAMETER / 2.0
                 - WALL_THICKNESS / 2.0,

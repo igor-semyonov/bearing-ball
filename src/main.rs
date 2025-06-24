@@ -21,6 +21,7 @@ use iyes_perf_ui::prelude::*;
 // use iyes_perf_ui::entry::PerfUiEntry;
 
 const ACCELERATION_DUE_TO_GRAVITY: f32 = 2500.0;
+const CEILING_DAMPING_FACTOR: f32 = 0.9;
 
 const PLAYER_INITIAL_X: f32 = 800.0;
 const PLAYER0_INITIAL_POSITION_X: f32 = -PLAYER_INITIAL_X;
@@ -631,7 +632,7 @@ fn apply_ball_bounds(
         transform
             .translation
             .y = bound.top;
-        velocity.y *= -1.0;
+        velocity.y *= -CEILING_DAMPING_FACTOR;
     } else if transform
         .translation
         .y

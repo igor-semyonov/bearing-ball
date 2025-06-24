@@ -94,7 +94,7 @@ struct CollisionSound(Handle<AudioSource>);
 )]
 struct Net;
 
-#[derive(Component)]
+#[derive(Component, Deref, DerefMut, Clone, Copy)]
 struct Player(usize);
 
 #[derive(Component)]
@@ -708,23 +708,23 @@ fn player_movement(
         With<Player>,
     >,
 ) {
-    for (player_id, transform, mut velocity, bound) in query
+    for (&player_id, transform, mut velocity, bound) in
+        query
     {
         let mut direction = 0.0;
         if keyboard_input
-            .pressed(PLAYER_MOVE_LEFT[player_id.0])
+            .pressed(PLAYER_MOVE_LEFT[*player_id])
         {
             direction -= PLAYER_SPEED;
         }
         if keyboard_input
-            .pressed(PLAYER_MOVE_RIGHT[player_id.0])
+            .pressed(PLAYER_MOVE_RIGHT[*player_id])
         {
             direction += PLAYER_SPEED;
         }
         velocity.x = direction;
 
-        if keyboard_input.pressed(PLAYER_JUMP[player_id.0])
-        {
+        if keyboard_input.pressed(PLAYER_JUMP[*player_id]) {
             if transform
                 .translation
                 .y

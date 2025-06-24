@@ -260,13 +260,13 @@ fn main() {
         FixedUpdate,
         (
             apply_velocity,
-            apply_gravity,
-            check_for_ball_collisions,
             apply_ball_bounds,
-            apply_player_bounds,
-            player_movement,
+            check_for_ball_collisions,
             play_collision_sound,
-        ),
+            player_movement,
+            apply_player_bounds,
+            apply_gravity,
+        ).chain(),
     );
     app.run();
 }

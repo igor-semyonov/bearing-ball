@@ -70,11 +70,11 @@ const NET_HEIGHT: f32 = 200.0;
 
 // key bindings
 const PLAYER_MOVE_LEFT: [KeyCode; 2] =
-    [KeyCode::KeyR, KeyCode::KeyN];
+    [KeyCode::KeyA, KeyCode::KeyJ];
 const PLAYER_MOVE_RIGHT: [KeyCode; 2] =
-    [KeyCode::KeyT, KeyCode::KeyI];
+    [KeyCode::KeyD, KeyCode::KeyL];
 const PLAYER_JUMP: [KeyCode; 2] =
-    [KeyCode::KeyF, KeyCode::KeyU];
+    [KeyCode::KeyW, KeyCode::KeyI];
 
 #[derive(Component, Deref, DerefMut)]
 struct Velocity(Vec2);

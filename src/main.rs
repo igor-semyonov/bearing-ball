@@ -20,7 +20,9 @@ use iyes_perf_ui::prelude::*;
 // use bevy::window::PrimaryWindow;
 // use iyes_perf_ui::entry::PerfUiEntry;
 
-const ACCELERATION_DUE_TO_GRAVITY: f32 = 2500.0;
+const ACCELERATION_DUE_TO_GRAVITY: f32 = 4500.0;
+const PLAYER_SPEED: f32 = 900.0;
+const PLAYER_JUMP_SPEED: f32 = 1800.0;
 const CEILING_DAMPING_FACTOR: f32 = 0.9;
 
 const PLAYER_INITIAL_X: f32 = 800.0;
@@ -48,6 +50,12 @@ const PLAYER0_COLOR: Color = Color::srgb(
 const PLAYER1_COLOR: Color = Color::srgb(
     0.0, 0.0, 1.0,
 );
+const TEXT_COLOR: Color = Color::srgb(
+    0.5, 0.5, 1.0,
+);
+const SCORE_COLOR: Color = Color::srgb(
+    1.0, 0.5, 0.5,
+);
 
 const BALL_DIAMETER: f32 = 90.;
 const PLAYER_DIAMETER: f32 = 270.;
@@ -56,9 +64,6 @@ const BALL_INITIAL_DIRECTION: Vec2 = Vec2::new(
     0.0, 1.0,
 );
 const BALL_INITIAL_SPEED: f32 = 0.0;
-
-const PLAYER_SPEED: f32 = 800.0;
-const PLAYER_JUMP_SPEED: f32 = 1400.0;
 
 const BOUNDARY_BOTTOM: f32 = -500.0;
 const BOUNDARY_TOP: f32 = 500.0;
@@ -77,8 +82,26 @@ const PLAYER_MOVE_RIGHT: [KeyCode; 2] =
 const PLAYER_JUMP: [KeyCode; 2] =
     [KeyCode::KeyW, KeyCode::KeyI];
 
+const SCOREBOARD_FONT_SIZE: f32 = 33.0;
+const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
+
 #[derive(Component, Deref, DerefMut)]
 struct Velocity(Vec2);
+
+#[derive(
+    States, Default, Debug, Clone, Eq, PartialEq, Hash,
+)]
+enum GameModeState {
+    Paused,
+    #[default]
+    Running,
+}
+
+#[derive(Resource, Deref, DerefMut)]
+struct Score([u32; 2]);
+
+#[derive(Component)]
+struct ScoreboardUi;
 
 #[derive(Component)]
 struct Ball;
@@ -104,6 +127,24 @@ struct Bounds {
     left: f32,
     top: f32,
     bottom: f32,
+}
+
+impl Default for Bounds {
+    fn default() -> Self {
+        Self {
+            right: -PLAYER_DIAMETER / 2.0
+                - NET_THICKNESS / 2.0,
+            left: BOUNDARY_LEFT
+                + PLAYER_DIAMETER / 2.0
+                + WALL_THICKNESS / 2.0,
+            top: BOUNDARY_TOP
+                - PLAYER_DIAMETER / 2.0
+                - WALL_THICKNESS / 2.0,
+            bottom: BOUNDARY_BOTTOM
+                + PLAYER_DIAMETER / 2.0
+                + WALL_THICKNESS / 2.0,
+        }
+    }
 }
 
 #[derive(Component, Default)]
@@ -216,6 +257,9 @@ impl Wall {
     }
 }
 
+#[derive(SystemSet, Debug, Clone, Eq, PartialEq, Hash)]
+struct GameplaySet;
+
 fn main() {
     let mut app = App::new();
     app.add_plugins(
@@ -234,7 +278,9 @@ fn main() {
             },
         ),
     );
-    app.insert_resource(Time::<Fixed>::from_hz(256.0));
+    app.insert_resource(Time::<Fixed>::from_hz(256.0))
+        .init_state::<GameModeState>()
+        .insert_resource(Score([0; 2]));
     app.add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default());
     app.add_plugins(
         bevy::diagnostic::EntityCountDiagnosticsPlugin,
@@ -253,21 +299,37 @@ fn main() {
         ),
     );
     app.add_event::<CollisionEvent>();
+
+    // systems
     app.add_systems(
         Startup,
         (setup,),
     );
+
     app.add_systems(
         FixedUpdate,
         (
             apply_velocity,
+            apply_gravity,
             apply_ball_bounds,
+            // process_just_scored,
             check_for_ball_collisions,
-            play_collision_sound,
+            // play_collision_sound,
             player_movement,
             apply_player_bounds,
-            apply_gravity,
-        ).chain(),
+        )
+            .chain()
+            .in_set(GameplaySet),
+    );
+    app.configure_sets(
+        FixedUpdate,
+        GameplaySet
+            .run_if(in_state(GameModeState::Running)),
+    );
+    app.add_systems(
+        Update,
+        update_scoreboard
+            .run_if(in_state(GameModeState::Running)),
     );
     app.run();
 }
@@ -295,7 +357,9 @@ fn setup(
         Transform::from_translation(
             Vec3::new(
                 PLAYER0_INITIAL_POSITION_X,
-                BOUNDARY_BOTTOM,
+                BOUNDARY_BOTTOM
+                    + PLAYER_DIAMETER / 2.0
+                    + WALL_THICKNESS / 2.0,
                 0.0,
             ),
         )
@@ -325,7 +389,9 @@ fn setup(
         Transform::from_translation(
             Vec3::new(
                 PLAYER1_INITIAL_POSITION_X,
-                BOUNDARY_BOTTOM,
+                BOUNDARY_BOTTOM
+                    + PLAYER_DIAMETER / 2.0
+                    + WALL_THICKNESS / 2.0,
                 0.0,
             ),
         )
@@ -413,6 +479,41 @@ fn setup(
     commands.insert_resource(
         CollisionSound(ball_collision_sound),
     );
+
+    // Scoreboard
+    commands.spawn((
+        Text::new(""),
+        TextFont {
+            font_size: SCOREBOARD_FONT_SIZE,
+            ..default()
+        },
+        TextColor(TEXT_COLOR),
+        ScoreboardUi,
+        Node {
+            position_type: PositionType::Absolute,
+            top: SCOREBOARD_TEXT_PADDING,
+            left: SCOREBOARD_TEXT_PADDING,
+            ..default()
+        },
+        children![
+            (
+                TextSpan::default(),
+                TextFont {
+                    font_size: SCOREBOARD_FONT_SIZE,
+                    ..default()
+                },
+                TextColor(SCORE_COLOR),
+            ),
+            (
+                TextSpan::default(),
+                TextFont {
+                    font_size: SCOREBOARD_FONT_SIZE,
+                    ..default()
+                },
+                TextColor(SCORE_COLOR),
+            )
+        ],
+    ));
 }
 
 fn apply_velocity(
@@ -433,7 +534,13 @@ fn apply_velocity(
 }
 
 fn apply_gravity(
-    mut query: Query<(&mut Velocity,)>,
+    mut query: Query<
+        &mut Velocity,
+        Or<(
+            With<Ball>,
+            With<Player>,
+        )>,
+    >,
     time: Res<Time>,
 ) {
     for mut velocity in &mut query {
@@ -602,6 +709,7 @@ fn apply_ball_bounds(
         ),
         With<Ball>,
     >,
+    mut score: ResMut<Score>,
 ) {
     let (mut transform, mut velocity, bound) =
         query.into_inner();
@@ -642,7 +750,28 @@ fn apply_ball_bounds(
             .translation
             .y = bound.bottom;
         velocity.y *= -1.0;
+        if transform
+            .translation
+            .x
+            > 0.0
+        {
+            score[0] += 1;
+        } else {
+            score[1] += 1;
+        }
     }
+}
+
+fn process_just_scored(
+    // game_state: Res<GameModeState>,
+    query: Query<&mut Velocity>,
+) {
+    // if *game_state == GameModeState::JustScored {
+    //     for mut velocity in query {
+    //         velocity.x = 0.0;
+    //         velocity.y = 0.0;
+    //     }
+    // }
 }
 
 fn apply_player_bounds(
@@ -729,10 +858,34 @@ fn player_movement(
             if transform
                 .translation
                 .y
-                == bound.bottom
+                <= bound.bottom
             {
                 velocity.y = PLAYER_JUMP_SPEED;
             }
         }
     }
+}
+
+fn update_scoreboard(
+    score: Res<Score>,
+    score_root: Single<
+        Entity,
+        (
+            With<ScoreboardUi>,
+            With<Text>,
+        ),
+    >,
+    mut writer: TextUiWriter,
+) {
+    *writer.text(
+        *score_root,
+        1,
+    ) = score[0].to_string();
+    *writer.text(
+        *score_root,
+        2,
+    ) = format!(
+        " - {}",
+        score[1].to_string()
+    );
 }

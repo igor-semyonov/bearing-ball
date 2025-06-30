@@ -20,10 +20,17 @@ use iyes_perf_ui::prelude::*;
 // use bevy::window::PrimaryWindow;
 // use iyes_perf_ui::entry::PerfUiEntry;
 
-const ACCELERATION_DUE_TO_GRAVITY: f32 = 4500.0;
+// normal
+// const ACCELERATION_DUE_TO_GRAVITY: f32 = 4500.0;
+// const PLAYER_SPEED: f32 = 900.0;
+// const PLAYER_JUMP_SPEED: f32 = 1800.0;
+// const CEILING_DAMPING_FACTOR: f32 = 0.9;
+
+// easy
+const ACCELERATION_DUE_TO_GRAVITY: f32 = 1500.0;
 const PLAYER_SPEED: f32 = 900.0;
-const PLAYER_JUMP_SPEED: f32 = 1800.0;
-const CEILING_DAMPING_FACTOR: f32 = 0.9;
+const PLAYER_JUMP_SPEED: f32 = 900.0;
+const CEILING_DAMPING_FACTOR: f32 = 0.8;
 
 const PLAYER_INITIAL_X: f32 = 800.0;
 const PLAYER0_INITIAL_POSITION_X: f32 = -PLAYER_INITIAL_X;
@@ -81,6 +88,9 @@ const PLAYER_MOVE_RIGHT: [KeyCode; 2] =
     [KeyCode::KeyD, KeyCode::KeyL];
 const PLAYER_JUMP: [KeyCode; 2] =
     [KeyCode::KeyW, KeyCode::KeyI];
+
+const SCOREBOARD_FONT_SIZE: f32 = 33.0;
+const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
 
 const SCOREBOARD_FONT_SIZE: f32 = 33.0;
 const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
@@ -314,7 +324,7 @@ fn main() {
             apply_ball_bounds,
             // process_just_scored,
             check_for_ball_collisions,
-            // play_collision_sound,
+            play_collision_sound,
             player_movement,
             apply_player_bounds,
         )
@@ -629,24 +639,19 @@ fn check_for_ball_collisions(
         {
             ball_velocity.y *= -1.0;
         } else {
-            let theta =
-                ball_velocity.angle_to(collision_normal);
-            let new_ball_velocity = -ball_velocity
-                .rotate(Vec2::from_angle(2.0 * theta));
-            ball_velocity.x = new_ball_velocity.x;
-            ball_velocity.y = new_ball_velocity.y;
+            // switched to projection representation to avoid acos_approximate use
+            // let theta =
+            //     ball_velocity.angle_to(collision_normal);
+            // **ball_velocity= -ball_velocity
+            //     .rotate(Vec2::from_angle(2.0 * theta));
+            **ball_velocity = **ball_velocity - 2.0 * ball_velocity.dot(collision_normal) * collision_normal;
         }
         let player_velocity_projected_onto_collision_normal =
             player_velocity
                 .xy()
                 .dot(collision_normal)
                 * collision_normal;
-        ball_velocity.x +=
-            player_velocity_projected_onto_collision_normal
-                .x;
-        ball_velocity.y +=
-            player_velocity_projected_onto_collision_normal
-                .y;
+        **ball_velocity += player_velocity_projected_onto_collision_normal;
         collision_event.write_default();
     }
     let (net_transform,) = &net_query.into_inner();

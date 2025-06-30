@@ -20,10 +20,17 @@ use iyes_perf_ui::prelude::*;
 // use bevy::window::PrimaryWindow;
 // use iyes_perf_ui::entry::PerfUiEntry;
 
-const ACCELERATION_DUE_TO_GRAVITY: f32 = 4500.0;
+// normal
+// const ACCELERATION_DUE_TO_GRAVITY: f32 = 4500.0;
+// const PLAYER_SPEED: f32 = 900.0;
+// const PLAYER_JUMP_SPEED: f32 = 1800.0;
+// const CEILING_DAMPING_FACTOR: f32 = 0.9;
+
+// easy
+const ACCELERATION_DUE_TO_GRAVITY: f32 = 1500.0;
 const PLAYER_SPEED: f32 = 900.0;
-const PLAYER_JUMP_SPEED: f32 = 1800.0;
-const CEILING_DAMPING_FACTOR: f32 = 0.9;
+const PLAYER_JUMP_SPEED: f32 = 900.0;
+const CEILING_DAMPING_FACTOR: f32 = 0.8;
 
 const PLAYER_INITIAL_X: f32 = 800.0;
 const PLAYER0_INITIAL_POSITION_X: f32 = -PLAYER_INITIAL_X;
@@ -314,7 +321,7 @@ fn main() {
             apply_ball_bounds,
             // process_just_scored,
             check_for_ball_collisions,
-            // play_collision_sound,
+            play_collision_sound,
             player_movement,
             apply_player_bounds,
         )

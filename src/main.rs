@@ -636,24 +636,19 @@ fn check_for_ball_collisions(
         {
             ball_velocity.y *= -1.0;
         } else {
-            let theta =
-                ball_velocity.angle_to(collision_normal);
-            let new_ball_velocity = -ball_velocity
-                .rotate(Vec2::from_angle(2.0 * theta));
-            ball_velocity.x = new_ball_velocity.x;
-            ball_velocity.y = new_ball_velocity.y;
+            // switched to projection representation to avoid acos_approximate use
+            // let theta =
+            //     ball_velocity.angle_to(collision_normal);
+            // **ball_velocity= -ball_velocity
+            //     .rotate(Vec2::from_angle(2.0 * theta));
+            **ball_velocity = **ball_velocity - 2.0 * ball_velocity.dot(collision_normal) * collision_normal;
         }
         let player_velocity_projected_onto_collision_normal =
             player_velocity
                 .xy()
                 .dot(collision_normal)
                 * collision_normal;
-        ball_velocity.x +=
-            player_velocity_projected_onto_collision_normal
-                .x;
-        ball_velocity.y +=
-            player_velocity_projected_onto_collision_normal
-                .y;
+        **ball_velocity += player_velocity_projected_onto_collision_normal;
         collision_event.write_default();
     }
     let (net_transform,) = &net_query.into_inner();

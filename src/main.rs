@@ -92,9 +92,6 @@ const PLAYER_JUMP: [KeyCode; 2] =
 const SCOREBOARD_FONT_SIZE: f32 = 33.0;
 const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
 
-const SCOREBOARD_FONT_SIZE: f32 = 33.0;
-const SCOREBOARD_TEXT_PADDING: Val = Val::Px(5.0);
-
 #[derive(Component, Deref, DerefMut)]
 struct Velocity(Vec2);
 

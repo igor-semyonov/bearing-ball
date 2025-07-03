@@ -100,7 +100,6 @@
 [![Favorite Color: Purple](https://img.shields.io/badge/color-purple%20(obviously)-purple?style=for-the-badge&logo=palette)](https://github.com/your-username/bearing-ball "Favorite Color: Purple, obviously")
 
 <!-- Travel and Location Badges -->
-[![Timezone: PST (UTC-8)](https://img.shields.io/badge/timezone-PST%20(UTC-8)-blue?style=for-the-badge&logo=clock)](https://github.com/your-username/bearing-ball "Timezone: Pacific Standard Time, UTC minus 8")
 [![Location: Somewhere in California](https://img.shields.io/badge/location-somewhere%20in%20California-orange?style=for-the-badge&logo=map-pin)](https://github.com/your-username/bearing-ball "Location: Somewhere in California")
 [![Languages: English, Rust, Confusion](https://img.shields.io/badge/languages-English%2C%20Rust%2C%20Confusion-blue?style=for-the-badge&logo=translate)](https://github.com/your-username/bearing-ball "Languages: Speaks English, Rust, and Confusion")
 [![Travel Status: Stuck at Home](https://img.shields.io/badge/travel-stuck%20at%20home-red?style=for-the-badge&logo=airplane)](https://github.com/your-username/bearing-ball "Travel Status: Currently stuck at home")

@@ -1,4 +1,4 @@
-# ⚙️ Bearing Ball ⚙️
+# ⚙️ Bearing Ball - Balls of Fun ⚙️
 
 <!-- Badges Section - A comprehensive collection of project status indicators -->
 <div align="center">
@@ -125,13 +125,12 @@
 
 <!-- Main Content Section with Accessibility Tags -->
 <main role="main" aria-labelledby="project-title">
-  <h2 id="project-title" aria-label="Bearing Ball Game Title"> Bearing Ball - Balls of Fun </h2>
-  
   <section aria-labelledby="description-heading">
-    <h2 id="description-heading" class="visually-hidden">Project Description</h2>
+    <h2> Why Bear my Balls? </h2>
+    <h2 id="description-heading" class="visually-hidden">Why Bear my Balls?</h2>
     <p role="text" aria-label="Game description">
-      A thrilling 2D physics-based ball game built with Rust and the Bevy game engine. Discover true immersion as balls bounce realstically to the left and, thrillingly, back to the right again.
-      Experience realistic ball physics, customizable controls, and endless fun!
+      Because this is a thrilling 2D physics-based ball game built with the infallible Rust programming lifestyle and the Bevy game engine. Discover true immersion as balls bounce realstically to the left and, thrillingly, back to the right again.
+      Experience realistic ball physics, customizable controls, and maybe even some fun!
     </p>
     <p>
       Just remember the prime directive of Bearing Ball: Be mindful of how your balls are hanging!

@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use crate::config::{Config, string_to_keycode};
 
 #[derive(Component, Deref, DerefMut, Clone, Copy)]
 pub struct Player(pub usize);
@@ -45,24 +46,39 @@ pub fn player_movement(
         ),
         With<Player>,
     >,
+    config: Res<Config>,
 ) {
-    const PLAYER_MOVE_LEFT: [KeyCode; 2] = [KeyCode::KeyA, KeyCode::KeyJ];
-    const PLAYER_MOVE_RIGHT: [KeyCode; 2] = [KeyCode::KeyD, KeyCode::KeyL];
-    const PLAYER_JUMP: [KeyCode; 2] = [KeyCode::KeyW, KeyCode::KeyI];
-    const PLAYER_SPEED: f32 = 900.0;
-    const PLAYER_JUMP_SPEED: f32 = 1200.0;
+    let player_speed = config.player.speed;
+    let player_jump_speed = config.player.jump_speed;
+    
     for (&player_id, transform, mut velocity, bound) in query {
         let mut direction = 0.0;
-        if keyboard_input.pressed(PLAYER_MOVE_LEFT[*player_id]) {
-            direction -= PLAYER_SPEED;
+        
+        // Get the appropriate controls for this player
+        let (move_left, move_right, jump) = if *player_id == 0 {
+            (
+                string_to_keycode(&config.controls.player1_move_left),
+                string_to_keycode(&config.controls.player1_move_right),
+                string_to_keycode(&config.controls.player1_jump),
+            )
+        } else {
+            (
+                string_to_keycode(&config.controls.player2_move_left),
+                string_to_keycode(&config.controls.player2_move_right),
+                string_to_keycode(&config.controls.player2_jump),
+            )
+        };
+        
+        if keyboard_input.pressed(move_left) {
+            direction -= player_speed;
         }
-        if keyboard_input.pressed(PLAYER_MOVE_RIGHT[*player_id]) {
-            direction += PLAYER_SPEED;
+        if keyboard_input.pressed(move_right) {
+            direction += player_speed;
         }
         velocity.x = direction;
-        if keyboard_input.pressed(PLAYER_JUMP[*player_id]) {
+        if keyboard_input.pressed(jump) {
             if transform.translation.y <= bound.bottom {
-                velocity.y = PLAYER_JUMP_SPEED;
+                velocity.y = player_jump_speed;
             }
         }
     }

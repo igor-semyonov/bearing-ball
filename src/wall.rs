@@ -1,4 +1,6 @@
 use bevy::prelude::*;
+use crate::Config;
+use bevy::prelude::Resource;
 
 #[derive(Component)]
 pub struct Wall;
@@ -11,38 +13,39 @@ pub enum WallLocation {
 }
 
 impl WallLocation {
-    pub fn position(&self) -> Vec2 {
+    pub fn position(&self, config: &Config) -> Vec2 {
+        let width = config.arena.width / 2.0;
+        let height = config.arena.height / 2.0;
         match self {
-            WallLocation::Left => Vec2::new(-750.0, 0.),
-            WallLocation::Right => Vec2::new(750.0, 0.),
-            WallLocation::Bottom => Vec2::new(0., -480.0),
-            WallLocation::Top => Vec2::new(0., 480.0),
+            WallLocation::Left => Vec2::new(-width, 0.),
+            WallLocation::Right => Vec2::new(width, 0.),
+            WallLocation::Bottom => Vec2::new(0., -height),
+            WallLocation::Top => Vec2::new(0., height),
         }
     }
-    pub fn size(&self) -> Vec2 {
-        let arena_height = 480.0 - (-480.0);
-        let arena_width = 750.0 - (-750.0);
-        assert!(arena_height > 0.0);
-        assert!(arena_width > 0.0);
+    pub fn size(&self, config: &Config) -> Vec2 {
+        let width = config.arena.width;
+        let height = config.arena.height;
+        let wall_width = config.wall.width;
         match self {
             WallLocation::Left | WallLocation::Right => {
-                Vec2::new(10.0, arena_height + 10.0)
+                Vec2::new(wall_width, height + wall_width)
             }
             WallLocation::Bottom | WallLocation::Top => {
-                Vec2::new(arena_width + 10.0, 10.0)
+                Vec2::new(width + wall_width, wall_width)
             }
         }
     }
 }
 
 impl Wall {
-    pub fn new(location: WallLocation) -> (Wall, Sprite, Transform) {
+    pub fn new(location: WallLocation, config: &Config) -> (Wall, Sprite, Transform) {
         (
             Wall,
             Sprite::from_color(Color::srgb(0.8, 0.8, 0.8), Vec2::ONE),
             Transform {
-                translation: location.position().extend(0.0),
-                scale: location.size().extend(1.0),
+                translation: location.position(config).extend(0.0),
+                scale: location.size(config).extend(1.0),
                 ..default()
             },
         )

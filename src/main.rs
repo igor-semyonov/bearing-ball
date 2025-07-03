@@ -1,5 +1,6 @@
 #![allow(unused_imports)]
 use bevy::prelude::*;
+use bevy::window::{Window, WindowPlugin, WindowResolution};
 use iyes_perf_ui::prelude::*;
 mod player;
 mod ball;
@@ -9,6 +10,7 @@ mod score;
 mod game_state;
 mod sound;
 mod setup;
+mod config;
 
 use player::*;
 use ball::*;
@@ -18,17 +20,20 @@ use score::*;
 use game_state::*;
 use sound::*;
 use setup::setup;
+use config::{Config, load_config, get_window_mode};
 
 fn main() {
+    let config = load_config();
     let mut app = App::new();
     app.add_plugins(
         DefaultPlugins.set(
             WindowPlugin {
                 primary_window: Some(
                     Window {
-                        title: "Double Pendulum".into(),
-                        name: Some("double_pendulum".into()),
-                        mode: bevy::window::WindowMode::BorderlessFullscreen(MonitorSelection::Current),
+                        title: config.window.title.clone().into(),
+                        name: Some("bearing_ball".into()),
+                        mode: get_window_mode(&config.window.mode),
+                        resolution: WindowResolution::new(config.window.width as f32, config.window.height as f32),
                         ..Default::default()
                     },
                 ),
@@ -38,6 +43,7 @@ fn main() {
     );
     app.insert_resource(Time::<Fixed>::from_hz(256.0))
         .insert_resource(Score([0; 2]))
+        .insert_resource(config.clone())
         .init_state::<GameModeState>();
     app.add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default());
     app.add_plugins(
@@ -61,7 +67,7 @@ fn main() {
     // systems
     app.add_systems(
         Startup,
-        (setup, sound::change_global_volume),
+        setup,
     );
 
     app.add_systems(

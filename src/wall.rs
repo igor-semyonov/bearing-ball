@@ -24,15 +24,15 @@ impl WallLocation {
         }
     }
     pub fn size(&self, config: &Config) -> Vec2 {
-        let width = config.arena.width;
-        let height = config.arena.height;
+        let arena_width = config.arena.width;
+        let arena_height = config.arena.height;
         let wall_thickness = config.arena.wall_thickness;
         match self {
             WallLocation::Left | WallLocation::Right => {
-                Vec2::new(wall_width, height + wall_width)
+                Vec2::new(wall_thickness, arena_height + wall_thickness)
             }
             WallLocation::Bottom | WallLocation::Top => {
-                Vec2::new(width + wall_width, wall_width)
+                Vec2::new(arena_width + wall_thickness, wall_thickness)
             }
         }
     }

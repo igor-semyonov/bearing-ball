@@ -1,6 +1,6 @@
-use bevy::prelude::*;
-use bevy::audio::Volume;
 use crate::config::Config;
+use bevy::audio::Volume;
+use bevy::prelude::*;
 
 #[derive(Event, Default)]
 pub struct CollisionEvent;
@@ -19,7 +19,11 @@ pub fn play_collision_sound(
         commands.spawn((
             AudioPlayer(sound.clone()),
             PlaybackSettings {
-                volume: Volume::Linear(config.audio.volume),
+                volume: Volume::Linear(
+                    config
+                        .audio
+                        .volume,
+                ),
                 ..PlaybackSettings::DESPAWN
             },
         ));

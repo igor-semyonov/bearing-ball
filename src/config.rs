@@ -35,11 +35,11 @@ pub struct ArenaConfig {
     pub width: f32,
     #[default(960.0)]
     pub height: f32,
-    #[default(600.0)]
+    #[default(400.0)]
     pub player_spacing: f32,
     #[default(10.0)]
     pub wall_thickness: f32,
-    #[default(-600.0)]
+    #[default(-400.0)]
     pub ball_start_x: f32,
     #[default(300.0)]
     pub ball_start_y: f32,
@@ -110,61 +110,6 @@ pub struct AudioConfig {
     #[default(0.2)]
     pub volume: f32,
 }
-
-// impl Default for Config {
-//     fn default() -> Self {
-//         Self {
-//             player: PlayerConfig {
-//                 speed: 900.0,
-//                 jump_speed: 1200.0,
-//                 size: 160.0,
-//             },
-//             arena: ArenaConfig {
-//                 width: 1500.0,
-//                 height: 960.0,
-//                 player_spacing: 800.0,
-//                 wall_thickness: 10.0,
-//                 ball_start_x: -800.0,
-//                 ball_start_y: 300.0,
-//             },
-//             gravity: GravityConfig {
-//                 player: 3500.0,
-//                 ball: 1500.0,
-//             },
-//             ball: BallConfig {
-//                 size: 70.0,
-//             },
-//             wall: WallConfig {
-//                 width: 10.0,
-//             },
-//             net: NetConfig {
-//                 width: 20.0,
-//                 height: 200.0,
-//             },
-//             controls: ControlsConfig {
-//                 player1_move_left: "KeyA".to_string(),
-//                 player1_move_right: "KeyD".to_string(),
-//                 player1_jump: "KeyW".to_string(),
-//                 player2_move_left: "KeyJ".to_string(),
-//                 player2_move_right: "KeyL".to_string(),
-//                 player2_jump: "KeyI".to_string(),
-//             },
-//             window: WindowConfig {
-//                 title: "Bearing Ball".to_string(),
-//                 mode: "BorderlessFullscreen".to_string(),
-//                 width: 1920,
-//                 height: 1080,
-//             },
-//             ui: UiConfig {
-//                 font_size: 33.0,
-//                 scoreboard_margin: 5.0,
-//             },
-//             audio: AudioConfig {
-//                 volume: 0.2,
-//             },
-//         }
-//     }
-// }
 
 pub fn load_config() -> Config {
     match fs::read_to_string("balls.toml") {

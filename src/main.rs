@@ -1,26 +1,28 @@
 #![allow(unused_imports)]
 use bevy::prelude::*;
-use bevy::window::{Window, WindowPlugin, WindowResolution};
+use bevy::window::{
+    Window, WindowPlugin, WindowResolution,
+};
 use iyes_perf_ui::prelude::*;
-mod player;
 mod ball;
-mod wall;
-mod net;
-mod score;
-mod game_state;
-mod sound;
-mod setup;
 mod config;
+mod game_state;
+mod net;
+mod player;
+mod score;
+mod setup;
+mod sound;
+mod wall;
 
-use player::*;
 use ball::*;
-use wall::*;
-use net::*;
-use score::*;
+use config::{Config, get_window_mode, load_config};
 use game_state::*;
-use sound::*;
+use net::*;
+use player::*;
+use score::*;
 use setup::setup;
-use config::{Config, load_config, get_window_mode};
+use sound::*;
+use wall::*;
 
 fn main() {
     let config = load_config();
@@ -30,10 +32,27 @@ fn main() {
             WindowPlugin {
                 primary_window: Some(
                     Window {
-                        title: config.window.title.clone().into(),
+                        title: config
+                            .window
+                            .title
+                            .clone()
+                            .into(),
                         name: Some("bearing_ball".into()),
-                        mode: get_window_mode(&config.window.mode),
-                        resolution: WindowResolution::new(config.window.width as f32, config.window.height as f32),
+                        mode: get_window_mode(
+                            &config
+                                .window
+                                .mode,
+                        ),
+                        resolution: WindowResolution::new(
+                            config
+                                .window
+                                .width
+                                as f32,
+                            config
+                                .window
+                                .height
+                                as f32,
+                        ),
                         ..Default::default()
                     },
                 ),
@@ -66,8 +85,7 @@ fn main() {
 
     // systems
     app.add_systems(
-        Startup,
-        setup,
+        Startup, setup,
     );
 
     app.add_systems(

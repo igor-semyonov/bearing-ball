@@ -1,5 +1,5 @@
-use bevy::prelude::*;
 use crate::config::{Config, string_to_keycode};
+use bevy::prelude::*;
 
 #[derive(Component, Deref, DerefMut, Clone, Copy)]
 pub struct Player(pub usize);
@@ -48,27 +48,58 @@ pub fn player_movement(
     >,
     config: Res<Config>,
 ) {
-    let player_speed = config.player.speed;
-    let player_jump_speed = config.player.jump_speed;
-    
-    for (&player_id, transform, mut velocity, bound) in query {
+    let player_speed = config
+        .player
+        .speed;
+    let player_jump_speed = config
+        .player
+        .jump_speed;
+
+    for (&player_id, transform, mut velocity, bound) in
+        query
+    {
         let mut direction = 0.0;
-        
+
         // Get the appropriate controls for this player
-        let (move_left, move_right, jump) = if *player_id == 0 {
-            (
-                string_to_keycode(&config.controls.player1_move_left),
-                string_to_keycode(&config.controls.player1_move_right),
-                string_to_keycode(&config.controls.player1_jump),
-            )
-        } else {
-            (
-                string_to_keycode(&config.controls.player2_move_left),
-                string_to_keycode(&config.controls.player2_move_right),
-                string_to_keycode(&config.controls.player2_jump),
-            )
-        };
-        
+        let (move_left, move_right, jump) =
+            if *player_id == 0 {
+                (
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player1_move_left,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player1_move_right,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player1_jump,
+                    ),
+                )
+            } else {
+                (
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player2_move_left,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player2_move_right,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player2_jump,
+                    ),
+                )
+            };
+
         if keyboard_input.pressed(move_left) {
             direction -= player_speed;
         }
@@ -77,7 +108,11 @@ pub fn player_movement(
         }
         velocity.x = direction;
         if keyboard_input.pressed(jump) {
-            if transform.translation.y <= bound.bottom {
+            if transform
+                .translation
+                .y
+                <= bound.bottom
+            {
                 velocity.y = player_jump_speed;
             }
         }
@@ -95,19 +130,43 @@ pub fn apply_player_bounds(
     >,
 ) {
     for (mut transform, mut velocity, bound) in query {
-        if transform.translation.x > bound.right {
-            transform.translation.x = bound.right;
+        if transform
+            .translation
+            .x
+            > bound.right
+        {
+            transform
+                .translation
+                .x = bound.right;
             velocity.x = 0.0;
-        } else if transform.translation.x < bound.left {
-            transform.translation.x = bound.left;
+        } else if transform
+            .translation
+            .x
+            < bound.left
+        {
+            transform
+                .translation
+                .x = bound.left;
             velocity.x = 0.0;
         }
-        if transform.translation.y > bound.top {
-            transform.translation.y = bound.top;
+        if transform
+            .translation
+            .y
+            > bound.top
+        {
+            transform
+                .translation
+                .y = bound.top;
             velocity.y = 0.0;
-        } else if transform.translation.y < bound.bottom {
-            transform.translation.y = bound.bottom;
+        } else if transform
+            .translation
+            .y
+            < bound.bottom
+        {
+            transform
+                .translation
+                .y = bound.bottom;
             velocity.y = 0.0;
         }
     }
-} 
+}

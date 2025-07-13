@@ -6,9 +6,9 @@ size = 160.0
 [arena]
 width = 1500.0
 height = 960.0
-player_spacing = 800.0
+player_spacing = 600.0
 wall_thickness = 10.0
-ball_start_x = -800.0
+ball_start_x = -600.0
 ball_start_y = 300.0
 
 [gravity]

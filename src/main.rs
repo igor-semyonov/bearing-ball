@@ -7,14 +7,14 @@ use iyes_perf_ui::prelude::*;
 mod components;
 mod config;
 mod events;
-mod resources;
 mod game_state;
 mod prelude;
+mod resources;
 mod systems;
 
 use prelude::*;
 
-use config::{get_window_mode, load_config};
+use config::load_config;
 use game_state::*;
 
 fn main() {
@@ -31,11 +31,7 @@ fn main() {
                             .clone()
                             .into(),
                         name: Some("bearing_ball".into()),
-                        mode: get_window_mode(
-                            &config
-                                .window
-                                .mode,
-                        ),
+                        mode: config.get_window_mode(),
                         resolution: WindowResolution::new(
                             config
                                 .window

@@ -173,26 +173,28 @@ pub fn string_to_keycode(key_str: &str) -> KeyCode {
     }
 }
 
-pub fn get_window_mode(mode_str: &str) -> WindowMode {
-    match mode_str {
-        "BorderlessFullscreen" => {
-            WindowMode::BorderlessFullscreen(
+impl Config {
+    pub fn get_window_mode(&self) -> WindowMode {
+        match self.window.mode.as_str() {
+            "BorderlessFullscreen" => {
+                WindowMode::BorderlessFullscreen(
+                    MonitorSelection::Current,
+                )
+            }
+            "Fullscreen" => WindowMode::Fullscreen(
                 MonitorSelection::Current,
-            )
-        }
-        "Fullscreen" => WindowMode::Fullscreen(
-            MonitorSelection::Current,
-            VideoModeSelection::Current,
-        ),
-        "Windowed" => WindowMode::Windowed,
-        _ => {
-            eprintln!(
-                "Unknown window mode: {}, defaulting to BorderlessFullscreen",
-                mode_str
-            );
-            WindowMode::BorderlessFullscreen(
-                MonitorSelection::Current,
-            )
+                VideoModeSelection::Current,
+            ),
+            "Windowed" => WindowMode::Windowed,
+            _ => {
+                eprintln!(
+                    "Unknown window mode: {}, defaulting to BorderlessFullscreen",
+                    self.window.mode
+                );
+                WindowMode::BorderlessFullscreen(
+                    MonitorSelection::Current,
+                )
+            }
         }
     }
 }

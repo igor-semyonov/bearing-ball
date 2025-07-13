@@ -1,5 +1,6 @@
 use bevy::prelude::*;
 
+#[allow(dead_code)]
 #[derive(
     States, Default, Debug, Clone, Eq, PartialEq, Hash,
 )]

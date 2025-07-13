@@ -1,14 +1,9 @@
-use crate::ball::Ball;
+pub mod fixed_update;
+pub mod update;
+
+use crate::prelude::*;
 use crate::config::Config;
-use crate::net::Net;
-use crate::player::{
-    Bounds, Collider, Gravity, MainCamera, Player, Velocity,
-};
-use crate::score::ScoreboardUi;
-use crate::sound::CollisionSound;
-use crate::wall::{Wall, WallLocation};
-use bevy::prelude::*;
-use bevy::text::{TextColor, TextFont, TextSpan};
+use bevy::text::{TextColor, TextFont};
 use bevy::ui::{Node, PositionType, Val};
 use iyes_perf_ui::entries::PerfUiDefaultEntries;
 

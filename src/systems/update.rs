@@ -1,10 +1,4 @@
-use bevy::prelude::*;
-
-#[derive(Resource, Deref, DerefMut)]
-pub struct Score(pub [u32; 2]);
-
-#[derive(Component)]
-pub struct ScoreboardUi;
+use crate::prelude::*;
 
 pub fn update_scoreboard(
     score: Res<Score>,

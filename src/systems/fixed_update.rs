@@ -1,12 +1,8 @@
-use crate::player::{Bounds, Gravity, Player, Velocity};
-use crate::score::Score;
+use crate::prelude::*;
+use crate::config::{Config, string_to_keycode};
 use bevy::math::bounding::{
     Aabb2d, BoundingCircle, IntersectsVolume,
 };
-use bevy::prelude::*;
-
-#[derive(Component)]
-pub struct Ball;
 
 pub fn apply_velocity(
     mut query: Query<(
@@ -22,6 +18,142 @@ pub fn apply_velocity(
         transform
             .translation
             .y += velocity.y * time.delta_secs();
+    }
+}
+
+pub fn player_movement(
+    keyboard_input: Res<ButtonInput<KeyCode>>,
+    query: Query<
+        (
+            &Player,
+            &Transform,
+            &mut Velocity,
+            &Bounds,
+        ),
+        With<Player>,
+    >,
+    config: Res<Config>,
+) {
+    let player_speed = config
+        .player
+        .speed;
+    let player_jump_speed = config
+        .player
+        .jump_speed;
+
+    for (&player_id, transform, mut velocity, bound) in
+        query
+    {
+        let mut direction = 0.0;
+
+        // Get the appropriate controls for this player
+        let (move_left, move_right, jump) =
+            if *player_id == 0 {
+                (
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player1_move_left,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player1_move_right,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player1_jump,
+                    ),
+                )
+            } else {
+                (
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player2_move_left,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player2_move_right,
+                    ),
+                    string_to_keycode(
+                        &config
+                            .controls
+                            .player2_jump,
+                    ),
+                )
+            };
+
+        if keyboard_input.pressed(move_left) {
+            direction -= player_speed;
+        }
+        if keyboard_input.pressed(move_right) {
+            direction += player_speed;
+        }
+        velocity.x = direction;
+        if keyboard_input.pressed(jump) {
+            if transform
+                .translation
+                .y
+                <= bound.bottom
+            {
+                velocity.y = player_jump_speed;
+            }
+        }
+    }
+}
+
+pub fn apply_player_bounds(
+    query: Query<
+        (
+            &mut Transform,
+            &mut Velocity,
+            &Bounds,
+        ),
+        With<Player>,
+    >,
+) {
+    for (mut transform, mut velocity, bound) in query {
+        if transform
+            .translation
+            .x
+            > bound.right
+        {
+            transform
+                .translation
+                .x = bound.right;
+            velocity.x = 0.0;
+        } else if transform
+            .translation
+            .x
+            < bound.left
+        {
+            transform
+                .translation
+                .x = bound.left;
+            velocity.x = 0.0;
+        }
+        if transform
+            .translation
+            .y
+            > bound.top
+        {
+            transform
+                .translation
+                .y = bound.top;
+            velocity.y = 0.0;
+        } else if transform
+            .translation
+            .y
+            < bound.bottom
+        {
+            transform
+                .translation
+                .y = bound.bottom;
+            velocity.y = 0.0;
+        }
     }
 }
 
@@ -65,12 +197,12 @@ pub fn check_for_ball_collisions(
     net_query: Query<
         (&Transform,),
         (
-            With<crate::net::Net>,
+            With<Net>,
             Without<Ball>,
         ),
     >,
     mut collision_event: EventWriter<
-        crate::sound::CollisionEvent,
+        CollisionEvent,
     >,
 ) {
     let Ok((mut ball_transform, mut ball_velocity)) =
@@ -185,7 +317,7 @@ pub fn apply_ball_bounds(
         ),
         With<Ball>,
     >,
-    mut score: ResMut<crate::score::Score>,
+    mut score: ResMut<Score>,
 ) {
     let Ok((mut transform, mut velocity, bound)) =
         query.single_mut()
@@ -242,6 +374,7 @@ pub fn apply_ball_bounds(
     }
 }
 
+#[allow(dead_code)]
 pub fn process_just_scored(_query: Query<&mut Velocity>) {
     // if *game_state == GameModeState::JustScored {
     //     for mut velocity in query {
@@ -249,4 +382,27 @@ pub fn process_just_scored(_query: Query<&mut Velocity>) {
     //         velocity.y = 0.0;
     //     }
     // }
+}
+
+pub fn play_collision_sound(
+    mut commands: Commands,
+    mut collision_events: EventReader<CollisionEvent>,
+    sound: Res<CollisionSound>,
+    config: Res<Config>,
+) {
+    use bevy::audio::Volume;
+    if !collision_events.is_empty() {
+        collision_events.clear();
+        commands.spawn((
+            AudioPlayer(sound.clone()),
+            PlaybackSettings {
+                volume: Volume::Linear(
+                    config
+                        .audio
+                        .volume,
+                ),
+                ..PlaybackSettings::DESPAWN
+            },
+        ));
+    }
 }

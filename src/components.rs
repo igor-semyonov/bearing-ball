@@ -1,6 +1,36 @@
-use crate::Config;
-use bevy::prelude::Resource;
-use bevy::prelude::*;
+use crate::prelude::*;
+
+#[derive(Component, Deref, DerefMut)]
+pub struct Velocity(pub Vec2);
+
+#[derive(Component)]
+pub struct Ball;
+
+#[derive(Component, Deref, DerefMut, Clone, Copy)]
+pub struct Player(pub usize);
+
+#[derive(Component)]
+pub struct Collider;
+
+#[derive(Component, Deref, DerefMut)]
+pub struct Gravity(pub f32);
+
+#[derive(Component)]
+pub struct MainCamera;
+
+#[derive(Component)]
+pub struct Bounds {
+    pub right: f32,
+    pub left: f32,
+    pub top: f32,
+    pub bottom: f32,
+}
+
+#[derive(Component)]
+pub struct Net;
+
+#[derive(Component)]
+pub struct ScoreboardUi;
 
 #[derive(Component)]
 pub struct Wall;

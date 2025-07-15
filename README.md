@@ -1,7 +1,6 @@
 # ⚙️ Bearing Ball - Balls of Fun ⚙️
 
 <!-- Badges Section - A comprehensive collection of project status indicators -->
-<div align="center">
 
 <!-- Build and Quality Badges -->
 [![Build Status: Passing](https://img.shields.io/badge/build-passing-brightgreen?style=for-the-badge&logo=rust)](https://github.com/your-username/bearing-ball "Build Status: All tests passing successfully")
@@ -116,78 +115,45 @@
 [![Stress Level: Over 9000](https://img.shields.io/badge/stress-level%20over%209000-red?style=for-the-badge&logo=fire)](https://github.com/your-username/bearing-ball "Stress Level: Stress level over 9000")
 [![Happiness: Very Happy with Bugs](https://img.shields.io/badge/happiness-very%20happy%20with%20bugs-yellow?style=for-the-badge&logo=smile)](https://github.com/your-username/bearing-ball "Happiness: Very happy with bugs")
 
-</div>
-
-<!-- Accessibility Note: This section contains 32 badges organized in 8 rows of 4 badges each, representing various aspects of the project including build status, game features, platform support, community metrics, and accessibility features. Each badge is a visual indicator with text labels for screen readers. -->
-
 ---
 
-<!-- Main Content Section with Accessibility Tags -->
-<main role="main" aria-labelledby="project-title">
-  <section aria-labelledby="description-heading">
-    <h2 id="description-heading" class="visually-hidden">Why Bear my Balls?</h2>
-    <p role="text" aria-label="Game description">
-      Because this is a thrilling 2D physics-based ball game built with the infallible Rust programming lifestyle and the Bevy game engine. Discover true immersion as balls bounce realistically to the left and, thrillingly, back to the right again.
-      Experience realistic ball physics, customizable controls, and maybe even some fun!
-    </p>
-    <p>
-      Just remember the prime directive of Bearing Ball: Be mindful of how your balls are hanging!
-    </p>
-  </section>
-</main>
+## Why Bear my Balls?
 
-<!-- Game Features Section -->
-<section aria-labelledby="features-heading">
-  <h2 id="features-heading">🎮 Game Features</h2>
-  <ul role="list" aria-label="Game features list">
-    <li role="listitem">⚡ Puzzlingly realistic physics simulation</li>
-    <li role="listitem">🎯 Customizable player controls</li>
-    <li role="listitem">𝑸 Fully integrated Q-Zone</li>
-    <li role="listitem">🔧 Excessive configuration options</li>
-    <li role="listitem">🎵 Immersive sound effect</li>
-    <li role="listitem">📊 Real-time performance monitoring</li>
-    <li role="listitem">♿ Accessibility features, maybe</li>
-  </ul>
-</section>
+Because this is a thrilling 2D physics-based ball game built with the infallible Rust programming lifestyle and the Bevy game engine. Discover true immersion as balls bounce realistically to the left and, thrillingly, back to the right again.
+Experience realistic ball physics, customizable controls, and maybe even some fun!
 
-<!-- Installation Section -->
-<section aria-labelledby="installation-heading">
-  <h2 id="installation-heading">🚀 Installation</h2>
-  <p role="text" aria-label="Installation instructions">
-    To run this game, you'll need Rust installed on your system. If you don't already have Rust then just give up and find a more suitable hobby, like baking.
-  </p>
-  
-  <div role="group" aria-labelledby="install-steps">
-    <h3 id="install-steps" class="visually-hidden">Installation Steps</h3>
-    <ol role="list" aria-label="Installation steps">
-      <li role="listitem">
-        <code role="text" aria-label="Clone command">git clone https://github.com/your-username/bearing-ball.git</code>
-      </li>
-      <li role="listitem">
-        <code role="text" aria-label="Change directory command">cd bearing-ball</code>
-      </li>
-      <li role="listitem">
-        <code role="text" aria-label="Build command">cargo build --release</code>
-      </li>
-      <li role="listitem">
-        <code role="text" aria-label="Run command">cargo run --release</code>
-      </li>
-    </ol>
-  </div>
-</section>
+Just remember the prime directive of Bearing Ball: Be mindful of how your balls are hanging!
 
-<!-- Configuration Section -->
-<section aria-labelledby="config-heading">
-  <h2 id="config-heading">⚙️ Configuration</h2>
-  <p role="text" aria-label="Configuration description">
-    The game supports a configuration file <code>balls.toml</code> in the project root. 
-    You can tweak your balls<code>.toml</code> to affect things like length and girth... of the arena.
-  </p>
+## 🎮 Game Features
 
-  <div role="group" aria-labelledby="config-example">
-    <h3 id="config-example" class="visually-hidden">Configuration Example</h3>
-    <p role="text" aria-label="Configuration file example">Example <code>balls.toml</code>:</p>
-    
+- ⚡ Puzzlingly realistic physics simulation
+- 🎯 Customizable player controls
+- 𝑸 Fully integrated Q-Zone
+- 🔧 Excessive configuration options
+- 🎵 Immersive sound effect
+- 📊 Real-time performance monitoring
+- ♿ Accessibility features, maybe
+
+## 🚀 Installation
+
+To run this game, you'll need Rust installed on your system. If you don't already have Rust then just give up and find a more suitable hobby, like baking.
+
+### Installation Steps
+
+1. `git clone https://github.com/your-username/bearing-ball.git`
+2. `cd bearing-ball`
+3. `cargo build --release`
+4. `cargo run --release`
+
+## ⚙️ Configuration
+
+The game supports a configuration file `config.toml` in the project root, so you can customize your balls to your heart's content. 
+No longer suffocating from the constraints of their package... defaults, your balls can be set free by choosing how big and bouncy they are or how strongly gravity pulls on them while they hang. You can even control the size of the players who are allowed to interact with your balls. We sincerely believe this level of ball-control should be possible in all aspects of life and we truly hope this project can kickstart a frenzy of ball-reform.
+
+### Configuration Example
+
+Example `config.toml`:
+
 ```toml
 [player]
 speed = 900.0
@@ -226,106 +192,43 @@ mode = "BorderlessFullscreen"
 width = 1920
 height = 1080
 ```
-  </div>
 
-  <div>WARNING: Under no circumstances should you reveal your balls<code>.toml</code> in public or in the presence of polite company.</div>
+**WARNING**: Under no circumstances should you reveal your balls... configuration in public or in the presence of polite company. The authors of Bearing-Balls are not responsible for any ball-related moral outrage caused by overly-enthusiastic users. 
 
-  <!-- Available Key Codes Section -->
-  <div role="group" aria-labelledby="keycodes-heading">
-    <h3 id="keycodes-heading">⌨️ Available Key Codes</h3>
-    <p role="text" aria-label="Key codes description">
-      For controls, you can use any of these key names:
-    </p>
-    <ul role="list" aria-label="Available key codes">
-      <li role="listitem"><code>KeyA</code> through <code>KeyZ</code> for letter keys</li>
-      <li role="listitem"><code>Space</code> for spacebar</li>
-      <li role="listitem"><code>ShiftLeft</code>, <code>ShiftRight</code> for shift keys</li>
-      <li role="listitem"><code>ControlLeft</code>, <code>ControlRight</code> for control keys</li>
-      <li role="listitem"><code>AltLeft</code>, <code>AltRight</code> for alt keys</li>
-      <li role="listitem"><code>ArrowLeft</code>, <code>ArrowRight</code>, <code>ArrowUp</code>, <code>ArrowDown</code> for arrow keys</li>
-    </ul>
-  </div>
+### ⌨️ Available Key Codes
 
-  <!-- Window Modes Section -->
-  <div role="group" aria-labelledby="window-modes-heading">
-    <h3 id="window-modes-heading">🖥️ Window Modes</h3>
-    <p role="text" aria-label="Window modes description">
-      For window mode, you can use:
-    </p>
-    <ul role="list" aria-label="Available window modes">
-      <li role="listitem"><code>BorderlessFullscreen</code> - Fullscreen without borders</li>
-      <li role="listitem"><code>Fullscreen</code> - Fullscreen with borders</li>
-      <li role="listitem"><code>Windowed</code> - Windowed mode</li>
-    </ul>
-  </div>
-</section>
+For controls, you can use any of these key names:
 
-<!-- Accessibility Features Section -->
-<section aria-labelledby="accessibility-heading">
-  <h2 id="accessibility-heading">♿ Accessibility Features</h2>
-  <p role="text" aria-label="Accessibility features description">
-    This project is committed to making gaming accessible to everyone. 
-    The following accessibility features are supported:
-  </p>
-  <ul role="list" aria-label="Accessibility features list">
-    <li role="listitem">🎮 Fully customizable controls for different ability levels</li>
-    <li role="listitem">🔊 High contrast visual elements</li>
-    <li role="listitem">📱 Responsive design for various screen sizes</li>
-    <li role="listitem">⚙️ Configurable game speed and physics</li>
-    <li role="listitem">🎨 Color-blind friendly design</li>
-    <li role="listitem">⌨️ Keyboard-only navigation support</li>
-  </ul>
-</section>
+- `KeyA` through `KeyZ` for letter keys
+- `Space` for spacebar
+- `ShiftLeft`, `ShiftRight` for shift keys
+- `ControlLeft`, `ControlRight` for control keys
+- `AltLeft`, `AltRight` for alt keys
+- `ArrowLeft`, `ArrowRight`, `ArrowUp`, `ArrowDown` for arrow keys
 
-<!-- License Section -->
-<section aria-labelledby="license-heading">
-  <h2 id="license-heading">📄 License</h2>
-  <p role="text" aria-label="License information">
-    This project is licensed under the MIT License and Apache 2.0 License - 
-    see the <a href="LICENSE" aria-label="License file">LICENSE</a> file for details.
-  </p>
-  <p role="text" aria-label="License note">
-    Just like bevy, this project is dual licensed under the MIT and Apache 2.0 licenses.
-  </p>
-</section>
+### 🖥️ Window Modes
 
-<!-- Hidden CSS for accessibility -->
-<style>
-.visually-hidden {
-  position: absolute !important;
-  width: 1px !important;
-  height: 1px !important;
-  padding: 0 !important;
-  margin: -1px !important;
-  overflow: hidden !important;
-  clip: rect(0, 0, 0, 0) !important;
-  white-space: nowrap !important;
-  border: 0 !important;
-}
+For window mode, you can use:
 
-/* High contrast mode support */
-@media (prefers-contrast: high) {
-  body {
-    background: black !important;
-    color: white !important;
-  }
-  
-  a {
-    color: yellow !important;
-  }
-  
-  code {
-    background: #333 !important;
-    color: #fff !important;
-  }
-}
+- `BorderlessFullscreen` - Fullscreen without borders
+- `Fullscreen` - Fullscreen with borders
+- `Windowed` - Windowed mode
 
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  * {
-    animation-duration: 0.01ms !important;
-    animation-iteration-count: 1 !important;
-    transition-duration: 0.01ms !important;
-  }
-}
-</style>
+## ♿ Accessibility Features
+
+This project is committed to making gaming accessible to everyone. 
+The following accessibility features are supported:
+
+- 🎮 Fully customizable controls for different ability levels
+- 🔊 High contrast visual elements
+- 📱 Responsive design for various screen sizes
+- ⚙️ Configurable game speed and physics
+- 🎨 Color-blind friendly design
+- ⌨️ Keyboard-only navigation support
+
+## 📄 License
+
+This project is licensed under the MIT License and Apache 2.0 License - 
+see the [LICENSE](LICENSE) file for details.
+
+Just like bevy, this project is dual licensed under the MIT and Apache 2.0 licenses.

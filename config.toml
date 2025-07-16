@@ -1,0 +1,47 @@
+[player]
+speed = 900.0
+jump_speed = 1200.0
+size = 160.0
+
+[arena]
+width = 1500.0
+height = 960.0
+player_spacing = 600.0
+wall_thickness = 10.0
+ball_start_x = -600.0
+ball_start_y = 300.0
+
+[gravity]
+player = 3500.0
+ball = 1500.0
+
+[ball]
+size = 70.0
+
+[wall]
+width = 10.0
+
+[net]
+width = 20.0
+height = 200.0
+
+[ui]
+font_size = 33.0
+scoreboard_margin = 5.0
+
+[audio]
+volume = 0.2
+
+[controls]
+player1_move_left = "KeyA"
+player1_move_right = "KeyD"
+player1_jump = "KeyW"
+player2_move_left = "KeyJ"
+player2_move_right = "KeyL"
+player2_jump = "KeyI"
+
+[window]
+title = "Bearing Ball"
+mode = "BorderlessFullscreen"
+width = 1920
+height = 1080 

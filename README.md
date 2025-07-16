@@ -228,7 +228,4 @@ The following accessibility features are supported:
 
 ## 📄 License
 
-This project is licensed under the MIT License and Apache 2.0 License - 
-see the [LICENSE](LICENSE) file for details.
-
 Just like bevy, this project is dual licensed under the MIT and Apache 2.0 licenses.

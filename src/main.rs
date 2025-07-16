@@ -1,4 +1,3 @@
-use bevy::prelude::*;
 use bevy::window::{
     Window, WindowPlugin, WindowResolution,
 };

@@ -52,15 +52,15 @@ fn main() {
         .insert_resource(Score([0; 2]))
         .insert_resource(config.clone())
         .init_state::<GameModeState>();
-    // app.add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default());
-    // app.add_plugins(
-    //     bevy::diagnostic::EntityCountDiagnosticsPlugin,
-    // );
-    // app.add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin);
-    // app.add_plugins(
-    //     bevy::render::diagnostic::RenderDiagnosticsPlugin,
-    // );
-    // app.add_plugins(PerfUiPlugin);
+    app.add_plugins(bevy::diagnostic::FrameTimeDiagnosticsPlugin::default());
+    app.add_plugins(
+        bevy::diagnostic::EntityCountDiagnosticsPlugin,
+    );
+    app.add_plugins(bevy::diagnostic::SystemInformationDiagnosticsPlugin);
+    app.add_plugins(
+        bevy::render::diagnostic::RenderDiagnosticsPlugin,
+    );
+    app.add_plugins(PerfUiPlugin);
 
     app.insert_resource(
         ClearColor(

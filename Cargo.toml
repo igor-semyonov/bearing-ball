@@ -12,7 +12,7 @@ opt-level = 1
 opt-level = 3
 
 [dependencies]
-bevy = "0.16.1"
+bevy = { version = "0.16.1", features = ["wayland"] }
 iyes_perf_ui = "0.5.0"
 toml = "0.8"
 serde = { version = "1.0", features = ["derive"] }

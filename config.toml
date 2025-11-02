@@ -1,22 +1,22 @@
 [player]
-speed = 900.0
-jump_speed = 1200.0
-size = 160.0
+speed = 1200.0
+jump_speed = 1600.0
+size = 180.0
 
 [arena]
-width = 1500.0
-height = 960.0
-player_spacing = 600.0
+width = 2600.0
+height = 1100.0
+player_spacing = 900.0
 wall_thickness = 10.0
-ball_start_x = -600.0
+ball_start_x = -900.0
 ball_start_y = 300.0
 
 [gravity]
 player = 3500.0
-ball = 1500.0
+ball = 1800.0
 
 [ball]
-size = 70.0
+size = 90.0
 
 [wall]
 width = 10.0
@@ -34,11 +34,11 @@ volume = 0.2
 
 [controls]
 player1_move_left = "KeyA"
-player1_move_right = "KeyD"
+player1_move_right = "KeyS"
 player1_jump = "KeyW"
-player2_move_left = "KeyJ"
-player2_move_right = "KeyL"
-player2_jump = "KeyI"
+player2_move_left = "KeyN"
+player2_move_right = "KeyI"
+player2_jump = "KeyU"
 
 [window]
 title = "Bearing Ball"
